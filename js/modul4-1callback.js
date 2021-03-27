@@ -66,6 +66,16 @@ buttonRef.addEventListener('click', handleBtnClick);    //добавить сл�
 //Отложенный вызов http-запрос
 console.log('---Отложенный вызов http-запрос---');
     //работа с бекэндом
+    //API URL: https://pokeapi.co/api/v2/pokemon
+const onRequestSuccess = function (response) {
+
+    console.log('Вызов функции onRequestSuccess после успешного ответа бекэнда');
+    console.log(response);
+};
+fetch('https://pokeapi.co/api/v2/pokemon')
+    .then(res => res.json())
+    .then(onRequestSuccess);
+
             
     
 //отложенный вызов - геолокация пользователя
@@ -94,3 +104,49 @@ console.log('в коде перед таймаутом');
 setTimeout(callback3, 2000);   //счетчик, через сколько запустить ф, 1-ое наш колбек, 2 через сколько миллисекунд,
 //регистрирует и пошел таймер а код выполняется дальше
 console.log('в коде после таймаута');
+
+
+//Фильтр
+const filter = function (array,test) {   //перебираем
+    const filteredArray = [];   //возвращает отфильтрованый массив
+    for (const el of array) {
+        console.log(el);
+        const passed = test(el);
+        if (passed) {
+            filteredArray.push(el);
+            }
+    }
+    return filteredArray;
+};
+
+// ЛОГИКА ПРОВЕРКИ
+//1. Надо передать функцию
+//2. Ф получает элемент массива
+//3. если элемент массива удовлетворяет условию то ф вернет true
+//4. если элемент массива НЕ удовлетворяет условию то ф вернет false
+
+const callback4 = function (value) {
+    return value >= 3;
+};
+const r1 = filter([1, 2, 3, 4, 5], callback4);
+console.log('this is our filter', r1);
+
+const callback5 = function (value) {
+    return value <= 4;
+};
+const r2 = filter([1, 2, 3, 4, 5, 6, 7, 8], callback5);     //получили ф фильтр которая получает произвольный массив и произвольный колбек, 
+    //для каждого элемента оригинального массива вызывается колбек, и если он возвращает true. элемент оригинального массива записывается в финальный  массив 
+    console.log(r2);
+
+//получили ф фильтрации произвольного массива по произвольному 
+const fruits = [
+    { name: 'apples', quantity: 200, isFresh: true },
+    { name: 'grapes', quantity: 150, isFresh: false },
+    { name: 'bananes', quantity: 100, isFresh: true },
+];
+
+const getFruitsWithQuantity = function (fruit) {
+    return fruit.quantity >= 120;
+};
+const r3 = filter(fruits, getFruitsWithQuantity);
+console.log(r3);
